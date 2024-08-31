@@ -2,16 +2,18 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState(false);
 
   function handleError(e) {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const formDiv = document.querySelector('form div');
-    const formDivInput = document.querySelector('form div input');
-    if (formDivInput.value === '' || !emailRegex.test(formDivInput.value)) {
-      formDiv.classList.add('active');
+    // const formDiv = document.querySelector('form div');
+    // const formDivInput = document.querySelector('form div input');//i made corrections to make sure i didnt touch the Real Dom and only updated the states
+    if (email === '' || !emailRegex.test(email)) {
+      setError(true);
     } else {
-      formDiv.classList.remove('active');
+      setError(false);
     }
   };
 
@@ -22,9 +24,13 @@ function App() {
         <h1>We are launching <span>soon!</span></h1>
         <h3>Subscribe and get notified</h3>
         <form>
-          <div>
-            <input type="text" placeholder='Your email address..' />
-            <p>Please provide a valid email address</p>
+          <div className={error ? 'active': ''}>
+            <input type="text" 
+                   placeholder='Your email address..'
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)} 
+            />
+            {error && <p>Please provide a valid email address</p>}
           </div>
             <button onClick={handleError}>Notify Me</button>
         </form>
